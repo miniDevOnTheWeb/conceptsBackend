@@ -1,5 +1,6 @@
 import Router from "express"
 import { AppController } from "../controller/controller.js"
+import { verifyToken } from "../middlewares/midleware.js"
 export const router = Router()
 
 router.get("/", (req, res) => {
@@ -11,4 +12,4 @@ router.post('/register', AppController.register)
 router.post('/createConcept', AppController.createConcept)
 router.delete('/deleteConcept/:id', AppController.deleteConcept)
 router.get('/findConceptsByTitle/:title', AppController.findConceptsByTitle)
-router.get('/findConceptsByUser/:userId', AppController.findConceptsByUser)
+router.get('/findConceptsByUser/:userId', verifyToken, AppController.findConceptsByUser)

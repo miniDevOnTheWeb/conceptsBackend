@@ -12,7 +12,7 @@ export class Repository {
     }
 
     static createConcept = async ({ text, title, user_id }: { text: string, title: string, user_id: string }) => {
-        await connection.execute('call sp_create_concept (?, ?, ?)', [text, title, user_id])
+        await connection.execute('call sp_create_concept (?, ?, ?)', [title, text, user_id])
     }
 
     static deleteConcept = async (id: string) => {

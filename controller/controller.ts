@@ -1,12 +1,16 @@
 import type { NextFunction, Request, Response } from "express"
 import { AppModel } from "../model/model.js"
+import jwt from 'jsonwebtoken'
+import { BadRequestError } from "../middlewares/ErrorClases.js"
 
 export class AppController {
     static login = async (req: Request, res: Response, next: NextFunction) => {
         const { username, password } = req.body
         try {
             const user = await AppModel.login({ username, password })
-            return res.status(200).json({ user })
+            const token = jwt.sign(user, process.env.TOKEN_PRIVATE_KEY!, { expiresIn: '1h' })
+
+            return res.status(200).json({ user: user.user, token })
         } catch (error) {
             next(error)
         }
@@ -33,9 +37,12 @@ export class AppController {
     }
 
     static deleteConcept = async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.body
+        const { id } = req.params
+
+        if (!id) throw new BadRequestError("Id no proporcionado")
+
         try {
-            const concept = await AppModel.deleteConcept(id)
+            const concept = await AppModel.deleteConcept({ id })
             return res.status(200).json({ message: concept.message })
         } catch (error) {
             next(error)
@@ -43,20 +50,23 @@ export class AppController {
     }
 
     static findConceptsByUser = async (req: Request, res: Response, next: NextFunction) => {
-        const { userId } = req.body
+        const { userId } = req.params
+        if (!userId) throw new BadRequestError("Id no proporcionado")
         try {
-            const concepts = await AppModel.findConceptsByUser(userId)
-            return res.status(200).json({ concepts })
+            const concepts = await AppModel.findConceptsByUser({ user_id: userId })
+            return res.status(200).json({ concepts: concepts.concepts })
         } catch (error) {
             next(error)
         }
     }
 
     static findConceptsByTitle = async (req: Request, res: Response, next: NextFunction) => {
-        const { title } = req.body
+        const { title } = req.params
+        console.log(title)
+        if (!title) throw new BadRequestError("Titulo no proporcionado")
         try {
-            const concepts = await AppModel.findConceptsByTitle(title)
-            return res.status(200).json({ concepts })
+            const concepts = await AppModel.findConceptsByTitle({ title })
+            return res.status(200).json({ concepts: concepts.concepts })
         } catch (error) {
             next(error)
         }

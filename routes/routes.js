@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
 router.post('/login', AppController.login);
 router.post('/register', AppController.register);
 router.post('/createConcept', AppController.createConcept);
-router.delete('/deleteConcept', AppController.deleteConcept);
-router.get('/findConceptsByTitle', AppController.findConceptsByTitle);
-router.get('/findConceptsByUser', AppController.findConceptsByUser);
+router.delete('/deleteConcept/:id', AppController.deleteConcept);
+router.get('/findConceptsByTitle/:title', AppController.findConceptsByTitle);
+router.get('/findConceptsByUser/:userId', AppController.findConceptsByUser);
 //# sourceMappingURL=routes.js.map

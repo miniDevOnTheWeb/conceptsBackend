@@ -9,7 +9,7 @@ export class Repository {
         await connection.execute('call sp_register(?, ?)', [username, password]);
     };
     static createConcept = async ({ text, title, user_id }) => {
-        await connection.execute('call sp_create_concept (?, ?, ?)', [text, title, user_id]);
+        await connection.execute('call sp_create_concept (?, ?, ?)', [title, text, user_id]);
     };
     static deleteConcept = async (id) => {
         await connection.execute('delete from concepts where id = uuid_to_bin(?)', [id]);

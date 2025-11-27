@@ -1,13 +1,15 @@
 import bcrypt from "bcrypt"
 import { Repository } from "./repository.js";
+import { BadRequestError, NotFoundError } from "../middlewares/ErrorClases.js";
 
 export class AppModel {
     static login = async ({ username, password }: { username: string, password: string }) => {
         const user = await Repository.login({ username })
-        if (!user) throw new Error("Usuario no encontrado")
+        if (!user) throw new NotFoundError("Usuario no encontrado")
 
-        const match = await bcrypt.compare(password, user.password)
-        if (!match) throw new Error("Contraseña incorrecta")
+        console.log(user)
+        const match = await bcrypt.compare(password, user.passwd)
+        if (!match) throw new BadRequestError("Contraseña incorrecta")
 
         return { user }
     }

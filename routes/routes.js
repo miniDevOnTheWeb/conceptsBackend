@@ -7,8 +7,9 @@ router.get("/", (req, res) => {
 });
 router.post('/login', AppController.login);
 router.post('/register', AppController.register);
-router.post('/createConcept', AppController.createConcept);
-router.delete('/deleteConcept/:id', AppController.deleteConcept);
-router.get('/findConceptsByTitle/:title', AppController.findConceptsByTitle);
+router.post('/createConcept', verifyToken, AppController.createConcept);
+router.delete('/deleteConcept/:id', verifyToken, AppController.deleteConcept);
+router.get('/findConceptsByTitle/:title', verifyToken, AppController.findConceptsByTitle);
 router.get('/findConceptsByUser/:userId', verifyToken, AppController.findConceptsByUser);
+router.get('/me', verifyToken, AppController.me);
 //# sourceMappingURL=routes.js.map

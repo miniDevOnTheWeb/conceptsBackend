@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "http://localhost:4200", credentials: true }));
 app.use('/api', router);
 app.use(errorHandler);
 const PORT = process.env.PORT || 3000;

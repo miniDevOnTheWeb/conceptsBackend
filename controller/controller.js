@@ -59,12 +59,21 @@ export class AppController {
     };
     static findConceptsByTitle = async (req, res, next) => {
         const { title } = req.params;
-        console.log(title);
         if (!title)
             throw new BadRequestError("Titulo no proporcionado");
         try {
             const concepts = await AppModel.findConceptsByTitle({ title });
             return res.status(200).json({ concepts: concepts.concepts });
+        }
+        catch (error) {
+            next(error);
+        }
+    };
+    static me = async (req, res, next) => {
+        try {
+            const user = req.user;
+            console.log(user);
+            return res.status(200).json({ user: user.user });
         }
         catch (error) {
             next(error);

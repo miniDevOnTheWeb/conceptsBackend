@@ -7,9 +7,10 @@ export class AppModel {
         const user = await Repository.login({ username })
         if (!user) throw new NotFoundError("Usuario no encontrado")
 
-        console.log(user)
         const match = await bcrypt.compare(password, user.passwd)
         if (!match) throw new BadRequestError("Contraseña incorrecta")
+
+        delete user.passwd
 
         return { user }
     }
